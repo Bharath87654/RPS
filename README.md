@@ -1,290 +1,86 @@
-# 🤖 AI-Powered Rock-Paper-Scissors Game
+🤖 AI-Powered Rock-Paper-Scissors Game
+A polished, desktop-grade Rock-Paper-Scissors game featuring real-time, rule-based hand gesture tracking via your webcam. Unlike typical computer vision proofs-of-concept, this application wraps the pipeline inside a state-driven, object-oriented Pygame desktop engine complete with visual animations, audio responses, a match database scoreboard, and persistent tournament structures.
 
-A professional desktop-grade **Rock-Paper-Scissors** game that combines **Computer Vision**, **MediaPipe Hand Tracking**, **OpenCV**, and **Pygame** to create an interactive real-time gaming experience.
+🌟 Key Features
+Zero-Lag Hand Recognition: Uses Google MediaPipe Hands framework to isolate hand joints natively.
 
-Unlike traditional computer vision demos, this project is built as a complete desktop application with a state-driven architecture, responsive UI, score tracking, audio feedback, and tournament management.
+Geometric Rule Engine: Bypasses bloated neural network model dependencies by evaluating spatial array structures in real time.
 
----
+State-Driven Game Loop: Features clean screen state synchronization routing (Start Screen → Active Countdown → Freeze Eval → Score Update → Game Over).
 
-## 🚀 Features
+Polished Desktop UI: Dark-mode dashboard layout including dynamic HUD rendering, button micro-animations, and responsive score panels.
 
-### 🎯 Real-Time Hand Gesture Recognition
+Tournament Tracker: Automatically logs round metrics, absolute win rates, loss thresholds, and total frame analytics for a Best-of-5 system.
 
-* Uses **Google MediaPipe Hands** to detect and track 21 hand landmarks.
-* Captures gestures directly from the webcam.
-* Supports:
+📂 Architecture Structure
+The system strictly follows Object-Oriented Programming (OOP) patterns to ensure loose decoupling between computer vision processing elements and drawing canvases:
 
-  * ✊ Rock
-  * ✋ Paper
-  * ✌️ Scissors
-
-### ⚡ Rule-Based Gesture Detection
-
-* No heavy machine learning models required.
-* Fast and lightweight geometric analysis of finger positions.
-* Low latency and efficient performance.
-
-### 🎮 State-Driven Game Engine
-
-Smooth game flow using a dedicated state machine:
-
-```text
-Start Screen
-      ↓
-Countdown
-      ↓
-Gesture Capture
-      ↓
-Result Evaluation
-      ↓
-Score Update
-      ↓
-Next Round / Game Over
-```
-
-### 🎨 Modern Desktop UI
-
-* Dark mode interface
-* Animated buttons
-* Dynamic HUD
-* Real-time score updates
-* Responsive layout
-
-### 🏆 Tournament Mode
-
-* Best-of-5 gameplay
-* Win/Loss tracking
-* Match statistics
-* Persistent scoreboard
-* Performance analytics
-
-### 🔊 Audio & Visual Feedback
-
-* Countdown sounds
-* Click effects
-* Win/Loss fanfares
-* Smooth visual transitions
-
----
-
-# 📂 Project Structure
-
-```text
+Plaintext
 ai_rps_game/
 │
 ├── assets/
-│   ├── images/       # Game icons and backgrounds
-│   ├── sounds/       # Sound effects
-│   └── fonts/        # Custom fonts
+│   ├── images/       # Game icons (rock, paper, scissors) and background canvases
+│   ├── sounds/       # Sound effects (beeps, clicks, win/loss fanfares)
+│   └── fonts/        # Custom game font (.ttf)
 │
-├── gesture_detector.py
-│   ├── MediaPipe hand tracking
-│   └── Gesture recognition engine
-│
-├── game_logic.py
-│   ├── AI move generation
-│   └── Winner evaluation system
-│
-├── scoreboard.py
-│   ├── Match statistics
-│   └── Tournament tracking
-│
-├── ui.py
-│   ├── Buttons
-│   ├── HUD rendering
-│   └── Window management
-│
-├── main.py
-│   └── Application entry point
-│
-├── requirements.txt
-└── README.md
-```
+├── gesture_detector.py # MediaPipe pipeline wrapper & coordinate analytics
+├── game_logic.py       # Computer AI move generation & outcome matrix state machine
+├── scoreboard.py       # Metrics engine & lifetime math calculation tracking
+├── ui.py               # Reusable button elements and Pygame window setup
+├── main.py             # Main pipeline thread coordinator
+├── requirements.txt    # Dependency lockfile
+└── README.md           # Documentation
+🛠️ Installation & Execution
+1. Prerequisites
+Ensure you have Python 3.10 or newer installed on your native machine along with an operational webcam interface.
 
----
-
-# 🛠️ Technologies Used
-
-| Technology | Purpose              |
-| ---------- | -------------------- |
-| Python     | Core Programming     |
-| OpenCV     | Webcam Processing    |
-| MediaPipe  | Hand Tracking        |
-| Pygame     | Desktop Game Engine  |
-| NumPy      | Numerical Operations |
-| OOP        | Modular Architecture |
-
----
-
-# 📦 Installation
-
-## 1️⃣ Clone Repository
-
-```bash
+2. Clone Repository
+Bash
 git clone https://github.com/yourusername/ai-rock-paper-scissors.git
-
 cd ai-rock-paper-scissors
-```
-
-## 2️⃣ Create Virtual Environment
-
-### Windows
-
-```bash
+3. Initialize Environment
+Bash
+# Setup clean isolated environment
 python -m venv venv
 
-venv\Scripts\activate
-```
-
-### Linux / macOS
-
-```bash
-python -m venv venv
-
+# Activate on Linux/macOS
 source venv/bin/activate
-```
 
-## 3️⃣ Install Dependencies
-
-```bash
+# Activate on Windows
+venv\Scripts\activate
+4. Install Dependencies
+Bash
 pip install -r requirements.txt
-```
-
-## 4️⃣ Run Application
-
-```bash
+5. Launch App Engine
+Bash
 python main.py
-```
+📐 Algorithmic Tracking Logic
+Instead of relying on heavy deep learning dataset models like CNNs, this system optimizes frame efficiency by analyzing the vertical Y-axis values of relative finger tracking points.
 
----
+Because MediaPipe scales coordinates from top-to-bottom (0.0 at top frame boundary, 1.0 at bottom boundary), checking if a finger is extended is formulated mathematically as:
 
-# 📐 Gesture Detection Algorithm
+Is_Extended=Y 
+TIP_ID
+​
+ <Y 
+PIP_ID
+​
+ 
+Plaintext
+       (8) Index Tip             
+          |                      Paper: [8, 12, 16, 20] < MCP Joints
+       (7) PIP Joint             Scissors: Only [8, 12] < MCP Joints
+          |                      Rock: All Tip Y-coords > MCP Joints
+       (6) MCP Joint             
+🛡️ Desktop Deployment Compilation
+To bundle this application into a standalone executable (.exe or .app) so users don't need a Python environment installed, compile using PyInstaller:
 
-The system avoids computationally expensive deep-learning classifiers and instead evaluates finger positions using MediaPipe landmark coordinates.
-
-A finger is considered **extended** if:
-
-```math
-Y(TIP) < Y(PIP)
-```
-
-where:
-
-* TIP = Finger tip landmark
-* PIP = Proximal interphalangeal joint
-* Smaller Y value indicates a higher position in the frame
-
-### Gesture Mapping
-
-#### ✊ Rock
-
-```text
-All fingers folded
-```
-
-#### ✌️ Scissors
-
-```text
-Index and Middle fingers extended
-Others folded
-```
-
-#### ✋ Paper
-
-```text
-All fingers extended
-```
-
----
-
-# 🧠 System Workflow
-
-```text
-Webcam Feed
-      ↓
-OpenCV Frame Capture
-      ↓
-MediaPipe Landmark Detection
-      ↓
-Finger State Analysis
-      ↓
-Gesture Classification
-      ↓
-Game Logic Evaluation
-      ↓
-UI Rendering & Score Update
-```
-
----
-
-# 🛡️ Build Standalone Executable
-
-## Windows
-
-```bash
+Bash
+# Windows Compilation
 pyinstaller --onefile --windowed --add-data "assets;assets" main.py
-```
 
-## macOS
-
-```bash
+# macOS Compilation
 pyinstaller --onefile --windowed --add-data "assets:assets" main.py
-```
+The output distributable package will generate directly inside the local /dist directory path.
 
-Compiled files will be generated inside:
-
-```text
-dist/
-```
-
-Users can run the application without installing Python.
-
----
-
-# 📊 Future Enhancements
-
-* Multiplayer Mode
-* Online Matchmaking
-* Hand Gesture Calibration
-* Difficulty Levels
-* Global Leaderboard
-* AI Opponent Learning
-* Voice Commands
-* Mobile Version
-
----
-
-# 📸 Screenshots
-
-Add screenshots here:
-
-```text
-assets/screenshots/home.png
-assets/screenshots/gameplay.png
-assets/screenshots/results.png
-```
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit changes
-4. Open a Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the MIT License.
-
----
-
-## 👨‍💻 Author
-
-**Bharath Kumar**
-
-If you found this project useful, consider giving it a ⭐ on GitHub!
+📝 Note: Upon launch, the OS may request webcam permissions. This is required for the application to map local camera matrices into Pygame pixel textures.
